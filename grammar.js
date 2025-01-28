@@ -11,7 +11,15 @@ module.exports = grammar({
   name: "ana",
 
   rules: {
-    // TODO: add the actual grammar rules
-    source_file: $ => "hello"
+    program: $ => repeat(choice($.array, $.integer, $.slice)),
+
+    array: $ => seq("[", optional($.slice), "]"),
+    slice: $ => choice(
+      seq(field("min", $.integer), "..", field("max", $.integer)),
+      seq(field("min", $.integer), ".."),
+      seq("..", field("max", $.integer))
+    ),
+
+    integer: $ => token(/\d+/),
   }
 });
