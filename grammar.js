@@ -10,16 +10,52 @@
 module.exports = grammar({
   name: "ana",
 
+  word: $ => $.id,
+
   rules: {
-    program: $ => repeat(choice($.array, $.integer, $.slice)),
+    program: $ => repeat($.scope),
 
     array: $ => seq("[", optional($.slice), "]"),
-    slice: $ => choice(
-      seq(field("min", $.integer), "..", field("max", $.integer)),
-      seq(field("min", $.integer), ".."),
-      seq("..", field("max", $.integer))
+    
+    nsid: $ => seq($.id, repeat1(seq(".", $.id))),
+
+    integer: $ => /\d+/,
+
+    slice: $ => seq(
+      optional(field("min", $.integer)),
+      "..",
+      optional(field("max", $.integer))
     ),
 
-    integer: $ => token(/\d+/),
+    block: $ => seq("{", choice(repeat($.param), repeat($.scope)), "}"),
+    scope: $ => seq(choice($.id, $.nsid), $.block),
+    
+    params: $ => seq("(", repeat($.param), ")"),
+
+    param: $ => seq(
+      choice(
+        $.ref,
+        seq(
+          choice($.id, $.optional), 
+          choice(":", "="), 
+          choice($.ref, $.type, $.slice, $.string), 
+        )
+      ),
+      optional(field("array", $.array)),
+      optional(choice(",", ";")),
+    ),
+
+    type: $ => seq(
+      $.id, 
+      optional($.params)
+    ),
+
+    optional: $ => seq($.id, "?"),
+
+    ref: $ => seq("#", $.id),
+
+    string: $ => /"(?:[^"\\]|\\.)*"/,
+
+    id: $ => /[a-zA-Z_$][a-zA-Z0-9_$]*/
   }
 });

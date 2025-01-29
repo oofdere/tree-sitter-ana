@@ -1,20 +1,20 @@
 ===
 slice
 ===
-1..2
+[1..2]
 ---
-(program (slice min: (integer) max: (integer)))
+(program (array (slice min: (integer) max: (integer))))
 
 ===
 min_slice
 ===
-1..
+[1..]
 ---
-(program (slice min: (integer)))
+(program (array (slice min: (integer))))
 
 ===
 max_slice
 ===
-..2
+[..2]
 ---
-(program (slice max: (integer)))
+(program (array (slice max: (integer))))
