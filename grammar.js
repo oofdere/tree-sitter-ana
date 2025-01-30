@@ -28,7 +28,7 @@ module.exports = grammar({
     ),
 
     block: $ => seq("{", choice(repeat($.param), repeat(choice($.scope, $.record))), "}"),
-    scope: $ => seq(choice($.id, $.nsid), $.block),
+    scope: $ => seq(field("id", choice($.id, $.nsid)), $.block),
     record: $ => seq("record", $.scope),
     
     params: $ => seq("(", repeat($.param), ")"),

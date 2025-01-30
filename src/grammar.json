@@ -150,17 +150,21 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "id"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "nsid"
-            }
-          ]
+          "type": "FIELD",
+          "name": "id",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "id"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "nsid"
+              }
+            ]
+          }
         },
         {
           "type": "SYMBOL",

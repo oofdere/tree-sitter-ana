@@ -177,21 +177,28 @@
   {
     "type": "scope",
     "named": true,
-    "fields": {},
+    "fields": {
+      "id": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "id",
+            "named": true
+          },
+          {
+            "type": "nsid",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "block",
-          "named": true
-        },
-        {
-          "type": "id",
-          "named": true
-        },
-        {
-          "type": "nsid",
           "named": true
         }
       ]
