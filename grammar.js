@@ -27,8 +27,9 @@ module.exports = grammar({
       optional(field("max", $.integer))
     ),
 
-    block: $ => seq("{", choice(repeat($.param), repeat($.scope)), "}"),
+    block: $ => seq("{", choice(repeat($.param), repeat(choice($.scope, $.record))), "}"),
     scope: $ => seq(choice($.id, $.nsid), $.block),
+    record: $ => seq("record", $.scope),
     
     params: $ => seq("(", repeat($.param), ")"),
 
