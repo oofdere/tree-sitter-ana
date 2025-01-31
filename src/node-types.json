@@ -53,21 +53,6 @@
     }
   },
   {
-    "type": "optional",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "id",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "param",
     "named": true,
     "fields": {
@@ -80,20 +65,42 @@
             "named": true
           }
         ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "id",
+            "named": true
+          }
+        ]
+      },
+      "optional": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "?",
+            "named": false
+          }
+        ]
+      },
+      "ref": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
-        {
-          "type": "id",
-          "named": true
-        },
-        {
-          "type": "optional",
-          "named": true
-        },
         {
           "type": "ref",
           "named": true
@@ -162,21 +169,6 @@
   {
     "type": "ref",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "id",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "scope",
-    "named": true,
     "fields": {
       "id": {
         "multiple": false,
@@ -192,13 +184,26 @@
           }
         ]
       }
-    },
+    }
+  },
+  {
+    "type": "scope",
+    "named": true,
+    "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "block",
+          "named": true
+        },
+        {
+          "type": "id",
+          "named": true
+        },
+        {
+          "type": "nsid",
           "named": true
         }
       ]
@@ -231,6 +236,11 @@
     }
   },
   {
+    "type": "string",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "type",
     "named": true,
     "fields": {},
@@ -248,6 +258,10 @@
         }
       ]
     }
+  },
+  {
+    "type": "\"",
+    "named": false
   },
   {
     "type": "#",
@@ -308,10 +322,6 @@
   {
     "type": "record",
     "named": false
-  },
-  {
-    "type": "string",
-    "named": true
   },
   {
     "type": "{",

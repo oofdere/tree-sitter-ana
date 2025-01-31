@@ -13,7 +13,7 @@ module.exports = grammar({
   word: $ => $.id,
 
   rules: {
-    program: $ => repeat($.scope),
+    program: $ => repeat(choice($.scope)),
 
     array: $ => seq("[", optional($.slice), "]"),
     
@@ -27,17 +27,28 @@ module.exports = grammar({
       optional(field("max", $.integer))
     ),
 
-    block: $ => seq("{", choice(repeat($.param), repeat(choice($.scope, $.record))), "}"),
-    scope: $ => seq(field("id", choice($.id, $.nsid)), $.block),
+    block: $ => seq("{", 
+      choice(repeat($.param), 
+      repeat(choice($.scope, $.record))), 
+      "}"
+    ),
+    scope: $ => seq(
+      choice($.id, $.nsid), 
+      $.block
+    ),
     record: $ => seq("record", $.scope),
     
     params: $ => seq("(", repeat($.param), ")"),
 
     param: $ => seq(
       choice(
-        $.ref,
         seq(
-          choice($.id, $.optional), 
+          field("ref", $.ref),
+          optional(field("optional", "?")),
+        ),
+        seq(
+          field("name", $.id),
+          optional(field("optional", "?")),
           choice(":", "="), 
           choice($.ref, $.type, $.slice, $.string), 
         )
@@ -51,11 +62,16 @@ module.exports = grammar({
       optional($.params)
     ),
 
-    optional: $ => seq($.id, "?"),
+    ref: $ => seq(
+      "#", 
+      field("id", choice($.id, $.nsid))
+    ),
 
-    ref: $ => seq("#", $.id),
-
-    string: $ => /"(?:[^"\\]|\\.)*"/,
+    string: $ => seq(
+      '"', 
+      field("contents", /(?:[^"\\]|\\.)*/), 
+      '"'
+    ),
 
     id: $ => /[a-zA-Z_$][a-zA-Z0-9_$]*/
   }

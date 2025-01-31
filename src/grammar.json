@@ -6,8 +6,13 @@
     "program": {
       "type": "REPEAT",
       "content": {
-        "type": "SYMBOL",
-        "name": "scope"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "scope"
+          }
+        ]
       }
     },
     "array": {
@@ -150,21 +155,17 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "FIELD",
-          "name": "id",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "id"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "nsid"
-              }
-            ]
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "id"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "nsid"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -212,22 +213,58 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "ref"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "ref",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "ref"
+                  }
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "FIELD",
+                      "name": "optional",
+                      "content": {
+                        "type": "STRING",
+                        "value": "?"
+                      }
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "type": "SEQ",
               "members": [
                 {
+                  "type": "FIELD",
+                  "name": "name",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "id"
+                  }
+                },
+                {
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "id"
+                      "type": "FIELD",
+                      "name": "optional",
+                      "content": {
+                        "type": "STRING",
+                        "value": "?"
+                      }
                     },
                     {
-                      "type": "SYMBOL",
-                      "name": "optional"
+                      "type": "BLANK"
                     }
                   ]
                 },
@@ -329,19 +366,6 @@
         }
       ]
     },
-    "optional": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "id"
-        },
-        {
-          "type": "STRING",
-          "value": "?"
-        }
-      ]
-    },
     "ref": {
       "type": "SEQ",
       "members": [
@@ -350,14 +374,44 @@
           "value": "#"
         },
         {
-          "type": "SYMBOL",
-          "name": "id"
+          "type": "FIELD",
+          "name": "id",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "id"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "nsid"
+              }
+            ]
+          }
         }
       ]
     },
     "string": {
-      "type": "PATTERN",
-      "value": "\"(?:[^\"\\\\]|\\\\.)*\""
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\""
+        },
+        {
+          "type": "FIELD",
+          "name": "contents",
+          "content": {
+            "type": "PATTERN",
+            "value": "(?:[^\"\\\\]|\\\\.)*"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
     },
     "id": {
       "type": "PATTERN",

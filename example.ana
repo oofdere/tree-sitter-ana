@@ -12,7 +12,7 @@ com.shinolabs.pinksea.oekaki {
         #imageLink;
     }
 
-        imageLink {
+    imageLink {
         fullsize: Uri;
         alt?: String;
     }
