@@ -58,7 +58,7 @@ module.exports = grammar({
     ),
 
     type: $ => seq(
-      $.id, 
+      field("name", $.id), 
       optional($.params)
     ),
 

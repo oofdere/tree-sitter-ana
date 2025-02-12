@@ -5,11 +5,16 @@
       "camelcase": "Ana",
       "scope": "source.ana",
       "file-types": [
-        ".ana"
+        "ana"
       ],
-      "injection-regex": "^ana$"
+      "injection-regex": "^ana$",
+      "highlights": [
+        "queries/highlights.scm"
+      ]
     }
   ],
+  "highlights": ["queries/highlights.scm"],
+
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
