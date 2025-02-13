@@ -10,69 +10,54 @@
 module.exports = grammar({
   name: "ana",
 
-  word: $ => $.id,
+  word: ($) => $.id,
 
   rules: {
-    program: $ => repeat(choice($.scope)),
+    program: ($) => repeat1($.namespace),
 
-    array: $ => seq("[", optional($.slice), "]"),
+    namespace: ($) =>
+      seq(
+        "@",
+        field("name", $.nsid),
+        "{",
+        field("body", repeat(choice($.record, $.object))),
+        "}"
+      ),
+
+    object: ($) =>
+      seq(
+        field("name", $.id),
+        "{",
+        field(
+          "body",
+          optional($.params)
+        ),
+        "}"
+      ),
+    record: $ => seq("record", $.object),
+
+    params: ($) =>
+      repeat1(seq(choice($.param, $.optional, $.ref), optional(choice(";", ",")))),
+    param: ($) => seq(field("name", $.id), ":", field("type", $._type)),
+    optional: ($) => seq(field("name", $.id), "?:", field("type", $._type)),
     
-    nsid: $ => seq($.id, repeat1(seq(".", $.id))),
+    _type: $ => choice($.ref, $.type, $.array),
+    type: $ => seq($.id),
 
-    integer: $ => /\d+/,
+    array: $ => seq($.type, "[", optional($._slice), "]"),
 
-    slice: $ => seq(
+    _slice: $ => seq(
       optional(field("min", $.integer)),
       "..",
       optional(field("max", $.integer))
     ),
+    integer: $ => /\d+/,
 
-    block: $ => seq("{", 
-      choice(repeat($.param), 
-      repeat(choice($.scope, $.record))), 
-      "}"
-    ),
-    scope: $ => seq(
-      choice($.id, $.nsid), 
-      $.block
-    ),
-    record: $ => seq("record", $.scope),
-    
-    params: $ => seq("(", repeat($.param), ")"),
+    id: () => /[a-zA-Z_$][a-zA-Z0-9_$]*/,
+    nsid: ($) => seq($.id, repeat1(seq(".", $.id))),
 
-    param: $ => seq(
-      choice(
-        seq(
-          field("ref", $.ref),
-          optional(field("optional", "?")),
-        ),
-        seq(
-          field("name", $.id),
-          optional(field("optional", "?")),
-          choice(":", "="), 
-          choice($.ref, $.type, $.slice, $.string), 
-        )
-      ),
-      optional(field("array", $.array)),
-      optional(choice(",", ";")),
-    ),
+    ref: ($) => seq("#", field("id", choice($.id, $.nsid))),
 
-    type: $ => seq(
-      field("name", $.id), 
-      optional($.params)
-    ),
-
-    ref: $ => seq(
-      "#", 
-      field("id", choice($.id, $.nsid))
-    ),
-
-    string: $ => seq(
-      '"', 
-      field("contents", /(?:[^"\\]|\\.)*/), 
-      '"'
-    ),
-
-    id: $ => /[a-zA-Z_$][a-zA-Z0-9_$]*/
-  }
+    string: () => seq('"', field("contents", /(?:[^"\\]|\\.)*/), '"'),
+  },
 });
