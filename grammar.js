@@ -20,38 +20,60 @@ module.exports = grammar({
         "@",
         field("name", $.nsid),
         "{",
-        field("body", repeat(choice($.record, $.object))),
+        field("body", repeat(choice($.record, $.object, $.get, $.post))),
         "}"
       ),
 
     object: ($) =>
+      seq(field("name", $.id), "{", field("body", optional($.properties)), "}"),
+    record: ($) => seq("record", $.object),
+
+    function: ($) =>
       seq(
         field("name", $.id),
+        "(",
+        field("parameters", optional($.properties)),
+        ")",
+        "->",
         "{",
-        field(
-          "body",
-          optional($.params)
-        ),
+        optional(field("body", $.properties)),
         "}"
       ),
-    record: $ => seq("record", $.object),
+    get: $ => seq("get", $.function),
+    post: $ => seq("post", $.function),
 
-    params: ($) =>
-      repeat1(seq(choice($.param, $.optional, $.ref), optional(choice(";", ",")))),
-    param: ($) => seq(field("name", $.id), ":", field("type", $._type)),
+    properties: ($) =>
+      repeat1(
+        seq(choice($.property, $.optional, $.ref), optional(choice(";", ",")))
+      ),
+    property: ($) => seq(field("name", $.id), ":", field("type", $._type)),
     optional: ($) => seq(field("name", $.id), "?:", field("type", $._type)),
-    
-    _type: $ => choice($.ref, $.type, $.array),
-    type: $ => seq($.id),
 
-    array: $ => seq($.type, "[", optional($._slice), "]"),
+    _type: ($) => seq(choice($.ref, $.type, $.array, $.union)),
+    type: ($) =>
+      seq(field("name", $.id), optional(seq("(", repeat($.param), ")"))),
+    param: ($) =>
+      seq(
+        field("name", $.id),
+        "=",
+        choice(
+          field("slice", $._slice),
+          field("integer", $.integer),
+          field("string", $.string)
+        ),
+        optional(",")
+      ),
+    array: ($) =>
+      seq(field("type", choice($.ref, $.type)), "[", optional($._slice), "]"),
+    union: $ => prec.left(seq($._type,"|", $._type)),
 
-    _slice: $ => seq(
-      optional(field("min", $.integer)),
-      "..",
-      optional(field("max", $.integer))
-    ),
-    integer: $ => /\d+/,
+    _slice: ($) =>
+      seq(
+        optional(field("min", $.integer)),
+        "..",
+        optional(field("max", $.integer))
+      ),
+    integer: ($) => /\d+/,
 
     id: () => /[a-zA-Z_$][a-zA-Z0-9_$]*/,
     nsid: ($) => seq($.id, repeat1(seq(".", $.id))),

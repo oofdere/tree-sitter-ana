@@ -1,31 +1,52 @@
-;; Define captures for syntax highlighting
+; Namespaces
+(namespace) @namespace
 
-;; Program and scope
-(program) @scope
-(scope) @scope
+; Types
+(type
+  name: (id) @type)
 
-;; Namespace identifiers
-(nsid) @namespace
-(id) @variable
+; References
+(ref) @type
 
-;; Blocks and records
-(block) @block
-(record) @block
+; Properties
+(property
+  name: (id) @property)
+(optional
+  name: (id) @property)
+(object name: (id) @variable)
 
-;; Parameters
-(param) @parameter
-(param name: (id) @property)
-(type) @type
+; Functions
+(function
+  name :(id) @function)
 
-;; References
-(ref) @function
-(id) @variable
+; Keywords
+"record" @keyword.type
+"get" @keyword.function
+"post" @keyword.function
 
-;; Data types
-(string) @string
+; Operators
+"->" @operator
+"|" @operator
+
+; Punctuation
+":" @punctuation.delimiter
+"?:" @punctuation.delimiter
+"," @punctuation.delimiter
+";" @punctuation.delimiter
+"{" @punctuation.bracket
+"}" @punctuation.bracket
+"(" @punctuation.bracket
+")" @punctuation.bracket
+"[" @punctuation.bracket
+"]" @punctuation.bracket
+
+; Literals
 (integer) @number
-(array) @type
-(slice) @operator
+(string) @string
 
-;; Nested structures
-(params) @punctuation.bracket
+; Parameters
+(param
+  name: (id) @parameter)
+
+; Comments (if you decide to add them to your grammar)
+; (comment) @comment
