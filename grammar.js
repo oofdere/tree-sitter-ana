@@ -13,7 +13,31 @@ module.exports = grammar({
   word: ($) => $.id,
 
   rules: {
-    program: ($) => repeat1($.namespace),
+    program: ($) => repeat1(choice($.namespace, $._harness)),
+
+    _harness: ($) =>
+      prec(
+        1,
+        seq(
+          "@@[",
+          choice(
+            $.object,
+            $.record,
+            $.function,
+            $.get,
+            $.post,
+            $.properties,
+            $.property,
+            $.optional,
+            $.type,
+            $.array,
+            $.union,
+            $.param,
+            $.ref,
+          ),
+          "]@@",
+        ),
+      ),
 
     namespace: ($) =>
       seq(
@@ -21,7 +45,7 @@ module.exports = grammar({
         field("name", $.nsid),
         "{",
         field("body", repeat(choice($.record, $.object, $.get, $.post))),
-        "}"
+        "}",
       ),
 
     object: ($) =>
@@ -37,14 +61,14 @@ module.exports = grammar({
         "->",
         "{",
         optional(field("body", $.properties)),
-        "}"
+        "}",
       ),
-    get: $ => seq("get", $.function),
-    post: $ => seq("post", $.function),
+    get: ($) => seq("get", $.function),
+    post: ($) => seq("post", $.function),
 
     properties: ($) =>
       repeat1(
-        seq(choice($.property, $.optional, $.ref), optional(choice(";", ",")))
+        seq(choice($.property, $.optional, $.ref), optional(choice(";", ","))),
       ),
     property: ($) => seq(field("name", $.id), ":", field("type", $._type)),
     optional: ($) => seq(field("name", $.id), "?:", field("type", $._type)),
@@ -59,19 +83,19 @@ module.exports = grammar({
         choice(
           field("slice", $._slice),
           field("integer", $.integer),
-          field("string", $.string)
+          field("string", $.string),
         ),
-        optional(",")
+        optional(","),
       ),
     array: ($) =>
       seq(field("type", choice($.ref, $.type)), "[", optional($._slice), "]"),
-    union: $ => prec.left(seq($._type,"|", $._type)),
+    union: ($) => prec.left(seq($._type, "|", $._type)),
 
     _slice: ($) =>
       seq(
         optional(field("min", $.integer)),
         "..",
-        optional(field("max", $.integer))
+        optional(field("max", $.integer)),
       ),
     integer: ($) => /\d+/,
 

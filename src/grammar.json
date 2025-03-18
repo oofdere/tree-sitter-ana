@@ -6,8 +6,91 @@
     "program": {
       "type": "REPEAT1",
       "content": {
-        "type": "SYMBOL",
-        "name": "namespace"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "namespace"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_harness"
+          }
+        ]
+      }
+    },
+    "_harness": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "@@["
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "object"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "record"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "function"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "get"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "post"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "properties"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "property"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "optional"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "type"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "array"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "union"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "param"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "ref"
+              }
+            ]
+          },
+          {
+            "type": "STRING",
+            "value": "]@@"
+          }
+        ]
       }
     },
     "namespace": {
@@ -620,5 +703,6 @@
   "precedences": [],
   "externals": [],
   "inline": [],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }
