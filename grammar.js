@@ -34,6 +34,7 @@ module.exports = grammar({
             $.union,
             $.param,
             $.ref,
+            $.string,
           ),
           "]@@",
         ),

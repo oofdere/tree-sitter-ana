@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-ana"
 description = "atproto lexicon dsl"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Tibet Tornaci <oofdere@hey.com>"]
 license = "MIT"
 readme = "README.md"
@@ -24,4 +24,4 @@ tree-sitter-language = "0.1"
 cc = "1.1.22"
 
 [dev-dependencies]
-tree-sitter = "0.24.7"
+tree-sitter = "0.25.3"

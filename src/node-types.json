@@ -350,6 +350,10 @@
           "named": true
         },
         {
+          "type": "string",
+          "named": true
+        },
+        {
           "type": "type",
           "named": true
         },
