@@ -22,20 +22,6 @@
             "named": true
           }
         ]
-      },
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ref",
-            "named": true
-          },
-          {
-            "type": "type",
-            "named": true
-          }
-        ]
       }
     }
   },
@@ -188,10 +174,6 @@
         "required": true,
         "types": [
           {
-            "type": "array",
-            "named": true
-          },
-          {
             "type": "ref",
             "named": true
           },
@@ -210,71 +192,28 @@
   {
     "type": "param",
     "named": true,
-    "fields": {
-      "integer": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      },
-      "max": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      },
-      "min": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "id",
-            "named": true
-          }
-        ]
-      },
-      "slice": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "..",
-            "named": false
-          },
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      },
-      "string": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "string",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "slice",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -314,6 +253,10 @@
           "named": true
         },
         {
+          "type": "integer",
+          "named": true
+        },
+        {
           "type": "namespace",
           "named": true
         },
@@ -347,6 +290,10 @@
         },
         {
           "type": "ref",
+          "named": true
+        },
+        {
+          "type": "slice",
           "named": true
         },
         {
@@ -406,10 +353,6 @@
         "required": true,
         "types": [
           {
-            "type": "array",
-            "named": true
-          },
-          {
             "type": "ref",
             "named": true
           },
@@ -444,6 +387,16 @@
     "type": "ref",
     "named": true,
     "fields": {
+      "array": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          }
+        ]
+      },
       "id": {
         "multiple": false,
         "required": true,
@@ -461,6 +414,32 @@
     }
   },
   {
+    "type": "slice",
+    "named": true,
+    "fields": {
+      "max": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          }
+        ]
+      },
+      "min": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "string",
     "named": true,
     "fields": {}
@@ -469,6 +448,16 @@
     "type": "type",
     "named": true,
     "fields": {
+      "array": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -499,10 +488,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "array",
-          "named": true
-        },
         {
           "type": "ref",
           "named": true

@@ -3,18 +3,18 @@ slice param
 ===
 @@[ param=..50 ]@@
 ---
-(program (param name: (id) max: (integer)))
+(program (param (id) (slice max: (integer))))
 
 ===
 string param
 ===
 @@[ param="value" ]@@
 ---
-(program (param name: (id) string: (string)))
+(program (param (id) (string)))
 
 ===
 integer param
 ===
 @@[ param=50 ]@@
 ---
-(program (param name: (id) integer: (integer)))
+(program (param (id) (integer)))

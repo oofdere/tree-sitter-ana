@@ -35,6 +35,8 @@ module.exports = grammar({
             $.param,
             $.ref,
             $.string,
+            $.slice,
+            $.integer,
           ),
           "]@@",
         ),
@@ -73,23 +75,34 @@ module.exports = grammar({
       ),
     property: ($) => seq(field("name", $.id), ":", field("type", $._type)),
     optional: ($) => seq(field("name", $.id), "?:", field("type", $._type)),
-
-    _type: ($) => seq(choice($.ref, $.type, $.array, $.union)),
-    type: ($) =>
-      seq(field("name", $.id), optional(seq("(", repeat($.param), ")"))),
     param: ($) =>
       seq(
-        field("name", $.id),
+        $.id,
         "=",
-        choice(
-          field("slice", $._slice),
-          field("integer", $.integer),
-          field("string", $.string),
-        ),
+        choice($.slice, $.integer, $.string),
+
         optional(","),
       ),
-    array: ($) =>
-      seq(field("type", choice($.ref, $.type)), "[", optional($._slice), "]"),
+
+    _type: ($) => choice($.ref, $.type, $.union),
+    type: ($) =>
+      prec.left(
+        seq(
+          field("name", $.id),
+          optional(seq("(", repeat($.param), ")")),
+          optional(field("array", $.array)),
+        ),
+      ),
+
+    ref: ($) =>
+      prec.left(
+        seq(
+          "#",
+          field("id", choice($.id, $.nsid)),
+          optional(field("array", $.array)),
+        ),
+      ),
+    array: ($) => seq("[", optional($._slice), "]"),
     union: ($) => prec.left(seq($._type, "|", $._type)),
 
     _slice: ($) =>
@@ -98,12 +111,11 @@ module.exports = grammar({
         "..",
         optional(field("max", $.integer)),
       ),
+    slice: ($) => $._slice,
     integer: ($) => /\d+/,
 
     id: () => /[a-zA-Z_$][a-zA-Z0-9_$]*/,
     nsid: ($) => seq($.id, repeat1(seq(".", $.id))),
-
-    ref: ($) => seq("#", field("id", choice($.id, $.nsid))),
 
     string: () => seq('"', field("contents", /(?:[^"\\]|\\.)*/), '"'),
   },

@@ -45,8 +45,7 @@
 (string) @string
 
 ; Parameters
-(param
-  name: (id) @parameter)
+(param (id) @parameter)
 
 ; Comments (if you decide to add them to your grammar)
 ; (comment) @comment
