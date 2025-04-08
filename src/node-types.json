@@ -467,17 +467,17 @@
             "named": true
           }
         ]
+      },
+      "param": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "param",
+            "named": true
+          }
+        ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "param",
-          "named": true
-        }
-      ]
     }
   },
   {

@@ -89,7 +89,7 @@ module.exports = grammar({
       prec.left(
         seq(
           field("name", $.id),
-          optional(seq("(", repeat($.param), ")")),
+          optional(seq("(", repeat(field("param", $.param)), ")")),
           optional(field("array", $.array)),
         ),
       ),
