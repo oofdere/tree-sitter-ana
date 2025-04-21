@@ -51,8 +51,7 @@ module.exports = grammar({
         "}",
       ),
 
-    object: ($) =>
-      seq(field("name", $.id), "{", field("body", optional($.properties)), "}"),
+    object: ($) => seq($.id, $.properties),
     record: ($) => seq("record", $.object),
 
     function: ($) =>
@@ -71,7 +70,12 @@ module.exports = grammar({
 
     properties: ($) =>
       repeat1(
-        seq(choice($.property, $.optional, $.ref), optional(choice(";", ","))),
+        seq(
+          "{",
+          choice($.property, $.optional, $.ref),
+          optional(choice(";", ",")),
+          "}",
+        ),
       ),
     property: ($) => seq(field("name", $.id), ":", field("type", $._type)),
     optional: ($) => seq(field("name", $.id), "?:", field("type", $._type)),
